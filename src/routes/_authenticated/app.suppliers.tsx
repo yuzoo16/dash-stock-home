@@ -18,7 +18,7 @@ interface SuppliersSearch {
   supplier?: string;
 }
 
-export const Route = createFileRoute("/app/suppliers")({
+export const Route = createFileRoute("/_authenticated/app/suppliers")({
   component: SuppliersPage,
   head: () => ({ meta: [{ title: "Suppliers — Stackwise" }] }),
   validateSearch: (search: Record<string, unknown>): SuppliersSearch => ({

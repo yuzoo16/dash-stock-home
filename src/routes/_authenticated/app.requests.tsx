@@ -31,7 +31,7 @@ import { EMPTY_REQUEST_FILTERS } from "@/components/requests/request-filter-type
 import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 
-export const Route = createFileRoute("/app/requests")({
+export const Route = createFileRoute("/_authenticated/app/requests")({
   component: RequestsPage,
   head: () => ({ meta: [{ title: "Requests — Stackwise" }] }),
   validateSearch: (search: Record<string, unknown>) => ({

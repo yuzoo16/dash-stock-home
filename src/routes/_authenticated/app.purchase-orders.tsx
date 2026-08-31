@@ -29,7 +29,7 @@ interface POSearch {
   po?: string;
 }
 
-export const Route = createFileRoute("/app/purchase-orders")({
+export const Route = createFileRoute("/_authenticated/app/purchase-orders")({
   component: PurchaseOrdersPage,
   head: () => ({ meta: [{ title: "Purchase Orders — Stackwise" }] }),
   validateSearch: (search: Record<string, unknown>): POSearch => ({

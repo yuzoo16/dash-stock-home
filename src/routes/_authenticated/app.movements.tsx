@@ -15,7 +15,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import type { StockMovement } from "@/types/inventory";
 
-export const Route = createFileRoute("/app/movements")({
+export const Route = createFileRoute("/_authenticated/app/movements")({
   component: MovementsPage,
   head: () => ({ meta: [{ title: "Movements — Stackwise" }] }),
   validateSearch: (search: Record<string, unknown>) => ({

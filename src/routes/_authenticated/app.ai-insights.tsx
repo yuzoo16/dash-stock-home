@@ -24,7 +24,7 @@ import { analyzeMovements, type AnomalySeverity, type AnomalyType } from "@/lib/
 import { usePermissions } from "@/hooks/usePermissions";
 import { subDays } from "date-fns";
 
-export const Route = createFileRoute("/app/ai-insights")({
+export const Route = createFileRoute("/_authenticated/app/ai-insights")({
   component: AiInsightsPage,
   head: () => ({
     meta: [{ title: "Insights — Stackwise" }],

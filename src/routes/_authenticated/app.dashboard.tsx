@@ -23,7 +23,7 @@ const TOUR_STEPS: TourStep[] = [
   { title: "You're all set!", description: "Explore the app or try the guided walkthrough to learn the core workflow. Happy managing!" },
 ];
 
-export const Route = createFileRoute("/app/dashboard")({
+export const Route = createFileRoute("/_authenticated/app/dashboard")({
   component: DashboardPage,
   head: () => ({ meta: [{ title: "Dashboard — Stackwise" }] }),
 });

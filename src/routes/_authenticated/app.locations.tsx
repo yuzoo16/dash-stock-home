@@ -13,7 +13,7 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { ErrorBoundary } from "@/components/shared/ErrorBoundary";
 import type { LocationTreeNode } from "@/hooks/useLocations";
 
-export const Route = createFileRoute("/app/locations")({
+export const Route = createFileRoute("/_authenticated/app/locations")({
   component: LocationsPage,
   head: () => ({ meta: [{ title: "Locations — Stackwise" }] }),
 });

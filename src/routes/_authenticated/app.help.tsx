@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 import { FAQ_DATA } from "@/lib/faq-data";
 
-export const Route = createFileRoute("/app/help")({
+export const Route = createFileRoute("/_authenticated/app/help")({
   component: HelpPage,
   head: () => ({ meta: [{ title: "Help Center — Stackwise" }] }),
 });
