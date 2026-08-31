@@ -22,7 +22,7 @@ import { Route as AppHelpRouteImport } from './routes/app.help'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCatalogRouteImport } from './routes/app.catalog'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
-import { Route as AppAiInsightsRouteImport } from './routes/app.ai-insights'
+import { Route as AuthenticatedAppAiInsightsRouteImport } from './routes/_authenticated/app.ai-insights'
 
 const AppRoute = AppRouteImport.update({
   id: '/app',
@@ -89,16 +89,16 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
-const AppAiInsightsRoute = AppAiInsightsRouteImport.update({
-  id: '/ai-insights',
-  path: '/ai-insights',
-  getParentRoute: () => AppRoute,
-} as any)
+const AuthenticatedAppAiInsightsRoute =
+  AuthenticatedAppAiInsightsRouteImport.update({
+    id: '/_authenticated/app/ai-insights',
+    path: '/app/ai-insights',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/app/ai-insights': typeof AppAiInsightsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/catalog': typeof AppCatalogRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -110,10 +110,10 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/': typeof AppIndexRoute
+  '/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/app/ai-insights': typeof AppAiInsightsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/catalog': typeof AppCatalogRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -125,12 +125,12 @@ export interface FileRoutesByTo {
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app': typeof AppIndexRoute
+  '/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
-  '/app/ai-insights': typeof AppAiInsightsRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/catalog': typeof AppCatalogRoute
   '/app/dashboard': typeof AppDashboardRoute
@@ -142,13 +142,13 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRoute
   '/app/suppliers': typeof AppSuppliersRoute
   '/app/': typeof AppIndexRoute
+  '/_authenticated/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/app'
-    | '/app/ai-insights'
     | '/app/analytics'
     | '/app/catalog'
     | '/app/dashboard'
@@ -160,10 +160,10 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/suppliers'
     | '/app/'
+    | '/app/ai-insights'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/app/ai-insights'
     | '/app/analytics'
     | '/app/catalog'
     | '/app/dashboard'
@@ -175,11 +175,11 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/suppliers'
     | '/app'
+    | '/app/ai-insights'
   id:
     | '__root__'
     | '/'
     | '/app'
-    | '/app/ai-insights'
     | '/app/analytics'
     | '/app/catalog'
     | '/app/dashboard'
@@ -191,11 +191,13 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/suppliers'
     | '/app/'
+    | '/_authenticated/app/ai-insights'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  AuthenticatedAppAiInsightsRoute: typeof AuthenticatedAppAiInsightsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -291,18 +293,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/ai-insights': {
-      id: '/app/ai-insights'
-      path: '/ai-insights'
+    '/_authenticated/app/ai-insights': {
+      id: '/_authenticated/app/ai-insights'
+      path: '/app/ai-insights'
       fullPath: '/app/ai-insights'
-      preLoaderRoute: typeof AppAiInsightsRouteImport
-      parentRoute: typeof AppRoute
+      preLoaderRoute: typeof AuthenticatedAppAiInsightsRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
 interface AppRouteChildren {
-  AppAiInsightsRoute: typeof AppAiInsightsRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppCatalogRoute: typeof AppCatalogRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -317,7 +318,6 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAiInsightsRoute: AppAiInsightsRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppCatalogRoute: AppCatalogRoute,
   AppDashboardRoute: AppDashboardRoute,
@@ -336,6 +336,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  AuthenticatedAppAiInsightsRoute: AuthenticatedAppAiInsightsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

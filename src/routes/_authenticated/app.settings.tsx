@@ -11,7 +11,7 @@ import { ReorderDefaults } from "@/components/settings/ReorderDefaults";
 import { SystemSettings } from "@/components/settings/SystemSettings";
 import { UserManagement } from "@/components/settings/UserManagement";
 
-export const Route = createFileRoute("/app/settings")({
+export const Route = createFileRoute("/_authenticated/app/settings")({
   component: SettingsPage,
   head: () => ({ meta: [{ title: "Settings — Stackwise" }] }),
 });

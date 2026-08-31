@@ -40,7 +40,7 @@ interface CatalogSearch {
   newItem?: string;
 }
 
-export const Route = createFileRoute("/app/catalog")({
+export const Route = createFileRoute("/_authenticated/app/catalog")({
   component: CatalogPage,
   head: () => ({ meta: [{ title: "Catalog — Stackwise" }] }),
   validateSearch: (search: Record<string, unknown>): CatalogSearch => ({

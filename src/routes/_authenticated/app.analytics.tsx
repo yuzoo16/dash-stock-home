@@ -22,7 +22,7 @@ import { SpendBySupplierChart } from "@/components/analytics/SpendBySupplierChar
 import { CostByCategoryChart } from "@/components/analytics/CostByCategoryChart";
 import { CostTrendChart } from "@/components/analytics/CostTrendChart";
 
-export const Route = createFileRoute("/app/analytics")({
+export const Route = createFileRoute("/_authenticated/app/analytics")({
   component: AnalyticsPage,
   head: () => ({ meta: [{ title: "Analytics — Stackwise" }] }),
 });
