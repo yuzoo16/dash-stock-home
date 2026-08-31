@@ -204,7 +204,13 @@
     font-family: var(--font-sans);
     overflow-x: hidden;
   }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
 }
+
 
 /* Print styles — hide app chrome, show print view */
 @media print {
