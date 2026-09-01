@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useDemo } from "@/hooks/useDemo";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useState, useEffect } from "react";
 import {
@@ -205,7 +204,7 @@ function StickyNav({ onTryDemo }: { onTryDemo: () => void }) {
           onClick={onTryDemo}
           className="hidden items-center gap-2 rounded-lg border border-border bg-muted/60 px-5 py-2 text-sm font-medium text-foreground transition-all hover:bg-muted md:inline-flex"
         >
-          Try demo
+          Sign in
         </button>
 
         {/* Mobile hamburger */}
@@ -244,7 +243,7 @@ function StickyNav({ onTryDemo }: { onTryDemo: () => void }) {
             }}
             className="mt-2 w-full rounded-lg border border-border bg-muted/60 px-5 py-2.5 text-sm font-medium text-foreground"
           >
-            Try demo
+            Sign in
           </button>
         </div>
       )}
@@ -326,12 +325,10 @@ function FeatureTabsSection() {
 
 /* ─── Page ───────────────────────────────────────────── */
 function LandingPage() {
-  const { enterDemoMode } = useDemo();
   const navigate = useNavigate();
 
   const handleTryDemo = () => {
-    enterDemoMode();
-    navigate({ to: "/app/dashboard" });
+    navigate({ to: "/auth" });
   };
 
   return (
@@ -364,7 +361,7 @@ function LandingPage() {
               onClick={handleTryDemo}
               className="group inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-base font-semibold text-primary-foreground shadow-lg transition-all hover:shadow-xl hover:brightness-110"
             >
-              Try demo
+              Sign in
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
@@ -473,7 +470,7 @@ function LandingPage() {
               Ready to take control of your inventory?
             </h2>
             <p className="mx-auto mt-4 max-w-md text-base text-background/60">
-              Explore Stackwise with sample data. No signup required.
+              Sign in to your workspace. Access is invite-only.
             </p>
             <div className="mt-8">
               <button
@@ -481,7 +478,7 @@ function LandingPage() {
                 onClick={handleTryDemo}
                 className="group inline-flex items-center gap-2 rounded-lg bg-background px-5 py-2.5 text-base font-semibold text-foreground shadow-lg transition-all hover:bg-background/90"
               >
-                Try demo
+                Sign in
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
