@@ -23,7 +23,6 @@ import { QuickEntryMode } from "@/components/data/QuickEntryMode";
 import { CommandPalette } from "@/components/command/CommandPalette";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 import { supabase } from "@/integrations/supabase/client";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRole } from "@/hooks/useRole";
 import { PermissionGate } from "@/hooks/usePermissions";
 
@@ -48,7 +47,6 @@ export function Header() {
   
   const { role } = useRole();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const [displayName, setDisplayName] = useState("Account");
 
   useEffect(() => {
@@ -59,8 +57,6 @@ export function Header() {
   }, []);
 
   const handleExit = async () => {
-    await queryClient.cancelQueries();
-    queryClient.clear();
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   };
