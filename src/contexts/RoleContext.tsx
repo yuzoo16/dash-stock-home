@@ -1,5 +1,6 @@
-import { createContext, useMemo, useState, type ReactNode } from "react";
-import { useDemo } from "@/hooks/useDemo";
+import { createContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { getMyRole } from "@/lib/auth.functions";
+import { supabase } from "@/integrations/supabase/client";
 import { getPermissionsForRole, type RolePermissions, type UserRoleType } from "@/lib/roles";
 
 export interface RoleContextValue {
@@ -8,17 +9,42 @@ export interface RoleContextValue {
   isAdmin: boolean;
   isManager: boolean;
   isRequestor: boolean;
-  /** Demo-only: override the current role */
-  setDemoRole: (role: UserRoleType) => void;
+  isLoading: boolean;
+  refreshRole: () => void;
 }
 
 export const RoleContext = createContext<RoleContextValue | null>(null);
 
 export function RoleProvider({ children }: { children: ReactNode }) {
-  const { isDemo } = useDemo();
-  const [demoRole, setDemoRole] = useState<UserRoleType>("admin");
+  const [role, setRole] = useState<UserRoleType>("requestor");
+  const [isLoading, setIsLoading] = useState(true);
+  const [tick, setTick] = useState(0);
 
-  const role: UserRoleType = isDemo ? demoRole : "requestor"; // stub: non-demo defaults to requestor
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        if (!cancelled) {
+          setRole("requestor");
+          setIsLoading(false);
+        }
+        return;
+      }
+      try {
+        const res = await getMyRole();
+        if (!cancelled) setRole((res.role as UserRoleType) ?? "requestor");
+      } catch {
+        if (!cancelled) setRole("requestor");
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+    void load();
+    return () => {
+      cancelled = true;
+    };
+  }, [tick]);
 
   const value = useMemo<RoleContextValue>(() => {
     const permissions = getPermissionsForRole(role);
@@ -28,9 +54,10 @@ export function RoleProvider({ children }: { children: ReactNode }) {
       isAdmin: role === "admin",
       isManager: role === "manager",
       isRequestor: role === "requestor",
-      setDemoRole,
+      isLoading,
+      refreshRole: () => setTick((t) => t + 1),
     };
-  }, [role]);
+  }, [role, isLoading]);
 
   return <RoleContext.Provider value={value}>{children}</RoleContext.Provider>;
 }

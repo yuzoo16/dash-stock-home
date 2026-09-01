@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { Header } from "@/components/layout/Header";
-import { DemoBanner } from "@/components/layout/DemoBanner";
 import { BottomNav } from "@/components/layout/BottomNav";
 import { ShortcutsHelpDialog } from "@/components/command/ShortcutsHelpDialog";
 import { PageTransition } from "@/components/shared/PageTransition";
-import { useDemo } from "@/hooks/useDemo";
 import { useRole } from "@/hooks/useRole";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { canAccessRoute } from "@/lib/route-guard";
@@ -18,8 +16,7 @@ export const Route = createFileRoute("/_authenticated/app")({
 });
 
 function AppLayout() {
-  const { isDemo } = useDemo();
-  const { role } = useRole();
+  const { role, isLoading } = useRole();
   const navigate = useNavigate();
   const location = useLocation();
   const [helpOpen, setHelpOpen] = useState(false);
@@ -29,20 +26,13 @@ function AppLayout() {
 
   // Role-based route guard
   useEffect(() => {
-    if (isDemo && !canAccessRoute(location.pathname, role)) {
+    if (!isLoading && !canAccessRoute(location.pathname, role)) {
       toast.error("You don't have permission to access that page.");
       navigate({ to: "/app/dashboard" });
     }
-  }, [location.pathname, role, navigate, isDemo]);
+  }, [location.pathname, role, navigate, isLoading]);
 
-  // Demo guard — redirect to landing if not in demo
-  useEffect(() => {
-    if (!isDemo) {
-      navigate({ to: "/" });
-    }
-  }, [isDemo, navigate]);
-
-  if (!isDemo) {
+  if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
@@ -52,7 +42,6 @@ function AppLayout() {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
-      <DemoBanner />
       <div className="flex flex-1 overflow-hidden">
         <aside className="hidden w-[260px] shrink-0 md:block">
           <Sidebar />

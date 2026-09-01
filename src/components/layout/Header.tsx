@@ -22,7 +22,7 @@ import { Sidebar } from "./Sidebar";
 import { QuickEntryMode } from "@/components/data/QuickEntryMode";
 import { CommandPalette } from "@/components/command/CommandPalette";
 import { NotificationCenter } from "@/components/notifications/NotificationCenter";
-import { useDemo } from "@/hooks/useDemo";
+import { supabase } from "@/integrations/supabase/client";
 import { useRole } from "@/hooks/useRole";
 import { PermissionGate } from "@/hooks/usePermissions";
 
@@ -45,15 +45,20 @@ export function Header() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [prefsOpen, setPrefsOpen] = useState(false);
   
-  const { exitDemoMode } = useDemo();
   const { role } = useRole();
   const navigate = useNavigate();
+  const [displayName, setDisplayName] = useState("Account");
 
-  const displayName = "Demo Admin";
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      const u = data.user;
+      if (u) setDisplayName((u.user_metadata?.['display_name'] as string) || u.email || "Account");
+    });
+  }, []);
 
   const handleExit = async () => {
-    await navigate({ to: "/" });
-    exitDemoMode();
+    await supabase.auth.signOut();
+    navigate({ to: "/auth", replace: true });
   };
 
   // CMD+K / Ctrl+K shortcut
@@ -118,7 +123,7 @@ export function Header() {
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleExit}>
             <LogOut className="mr-2 h-4 w-4" />
-            Exit demo
+            Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

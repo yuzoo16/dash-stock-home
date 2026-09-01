@@ -15,17 +15,17 @@ export interface DemoContextValue {
 export const DemoContext = createContext<DemoContextValue | null>(null);
 
 export function DemoProvider({ children }: { children: ReactNode }) {
-  const [store, setStore] = useState<DemoStore | null>(null);
+  // In-memory working data store for the app session.
+  const [store, setStore] = useState<DemoStore | null>(() => new DemoStore());
   const [version, setVersion] = useState(0);
 
   const enterDemoMode = useCallback(() => {
-    const s = new DemoStore();
-    setStore(s);
+    setStore(new DemoStore());
     setVersion(0);
   }, []);
 
   const exitDemoMode = useCallback(() => {
-    setStore(null);
+    setStore(new DemoStore());
     setVersion(0);
   }, []);
 
