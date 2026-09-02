@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SetupAdminRouteImport } from './routes/setup-admin'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -29,11 +28,6 @@ import { Route as AuthenticatedAppCatalogRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppAnalyticsRouteImport } from './routes/_authenticated/app.analytics'
 import { Route as AuthenticatedAppAiInsightsRouteImport } from './routes/_authenticated/app.ai-insights'
 
-const SetupAdminRoute = SetupAdminRouteImport.update({
-  id: '/setup-admin',
-  path: '/setup-admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -137,7 +131,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
-  '/setup-admin': typeof SetupAdminRoute
   '/app': typeof AuthenticatedAppRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
@@ -157,7 +150,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
-  '/setup-admin': typeof SetupAdminRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
   '/app/analytics': typeof AuthenticatedAppAnalyticsRoute
@@ -178,7 +170,6 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
-  '/setup-admin': typeof SetupAdminRoute
   '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/app/ai-insights': typeof AuthenticatedAppAiInsightsRoute
@@ -200,7 +191,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
-    | '/setup-admin'
     | '/app'
     | '/auth/callback'
     | '/app/ai-insights'
@@ -220,7 +210,6 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
-    | '/setup-admin'
     | '/auth/callback'
     | '/app/ai-insights'
     | '/app/analytics'
@@ -240,7 +229,6 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
-    | '/setup-admin'
     | '/_authenticated/app'
     | '/auth/callback'
     | '/_authenticated/app/ai-insights'
@@ -262,18 +250,10 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
-  SetupAdminRoute: typeof SetupAdminRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/setup-admin': {
-      id: '/setup-admin'
-      path: '/setup-admin'
-      fullPath: '/setup-admin'
-      preLoaderRoute: typeof SetupAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -462,7 +442,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
-  SetupAdminRoute: SetupAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
